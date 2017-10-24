@@ -8,8 +8,9 @@ function resizeCanvas() {
 
 function decas(){
   curves=[];
-  aux=[];
-  for(var i=0; i<tam;i++){
+
+  for(var i=0; i<=tam;i++){
+    aux=[];
     for (var j in points){
       aux.push(points[j]);
     }
@@ -36,6 +37,7 @@ function tejau(para){
     return tejau(para);
   }
 }
+
 
 function drawCircles() {
   ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
@@ -69,12 +71,6 @@ function drawCircles() {
   }
 
 
-  for (var i in curves) {
-    ctx.beginPath();
-    ctx.arc(curves[i].x, curves[i].y, 3, 0, 2 * Math.PI);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-  }
 
   x=curves[0].x;
   y=curves[0].y;
@@ -109,9 +105,10 @@ function getIndex(click) {
 var points = [];
 var curves = [];
 var aux =[];
+var parametrics=[];
 var move = false;
 var index = -1;
-var tam=100;
+var tam=1000;
 
 resizeCanvas();
 
@@ -121,7 +118,6 @@ canvas.addEventListener('mousedown', e => {
   if (index === -1) {
     points.push(click);
     decas();
-    drawCircles();
   } else {
     move = true;
   }
@@ -130,8 +126,8 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[index] = {x: e.offsetX, y: e.offsetY};
-    decas();
     drawCircles();
+    decas();
   }
 });
 
@@ -143,11 +139,9 @@ canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points.splice(index, 1);
     decas();
-    drawCircles();
   }
 });
 
 setInterval(() => {
-  if(!move)
     drawCircles();
-}, 1/ 3000);
+}, 1/30);
