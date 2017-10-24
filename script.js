@@ -6,6 +6,12 @@ function resizeCanvas() {
   canvas.height = parseFloat(window.getComputedStyle(canvas).height);
 }
 
+function resizeToFit() {
+    var width = parseFloat(window.getComputedStyle(canvas).width);
+    var height = parseFloat(window.getComputedStyle(canvas).height);
+    resizeCanvas(width, height);
+}
+
 function decas(){
   curves=[];
 
@@ -39,9 +45,8 @@ function tejau(para){
 }
 
 
-function drawCircles() {
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   
   for (var i in points) {
     ctx.beginPath();
@@ -126,8 +131,9 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[index] = {x: e.offsetX, y: e.offsetY};
-    drawCircles();
+    draw();
     decas();
+    draw();
   }
 });
 
@@ -143,5 +149,5 @@ canvas.addEventListener('dblclick', e => {
 });
 
 setInterval(() => {
-    drawCircles();
+    draw();
 }, 1/30);
