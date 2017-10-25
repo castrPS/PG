@@ -1,4 +1,5 @@
 var canvas = document.getElementById('canvas');
+var avaliacoes = document.getElementById('avaliacoes');
 var ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
@@ -13,14 +14,14 @@ function resizeToFit() {
 }
 
 function decas(){
-  curves=[];
+  curves[0]=[];
 
-  for(var i=0; i<=tam;i++){
+  for(var i=0; i<=document.getElementById('avaliacoes').value;i++){
     aux=[];
-    for (var j in points){
-      aux.push(points[j]);
+    for (var j in points[0]){
+      aux.push(points[0][j]);
     }
-    curves.push(tejau(i));
+    curves[0].push(tejau(i));
   }
 }
 
@@ -33,7 +34,7 @@ function tejau(para){
     var aux1=[];
       for(var j in aux){
         if(j!=0){
-          aux1.push({x: (aux[j-1].x*(para/tam)) + (aux[j].x*(1-para/tam)), y: (aux[j-1].y*(para/tam)) + (aux[j].y*(1-para/tam))});
+          aux1.push({x: (aux[j-1].x*(para/document.getElementById('avaliacoes').value)) + (aux[j].x*(1-para/document.getElementById('avaliacoes').value)), y: (aux[j-1].y*(para/document.getElementById('avaliacoes').value)) + (aux[j].y*(1-para/document.getElementById('avaliacoes').value))});
         }
       }
     aux=[];
@@ -48,49 +49,55 @@ function tejau(para){
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  for (var i in points) {
+
+  if(document.getElementById('pontos').checked){
+  for (var i in points[0]) {
     ctx.beginPath();
-    ctx.arc(points[i].x, points[i].y, 6, 0, 2 * Math.PI);
+    ctx.arc(points[0][i].x, points[0][i].y, 6, 0, 2 * Math.PI);
     ctx.fillStyle = 'black';
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(points[i].x, points[i].y, 4, 0, 2 * Math.PI);
+    ctx.arc(points[0][i].x, points[0][i].y, 4, 0, 2 * Math.PI);
     ctx.fillStyle = 'white';
     ctx.fill();
   }
+  }
 
-  var x=points[0].x;
-  var y=points[0].y;
-  for (var i in points) {
+  if(document.getElementById('poligonais').checked){
+  var x=points[0][0].x;
+  var y=points[0][0].y;
+  for (var i in points[0]) {
     
     if(i!=0){
       ctx.beginPath();
       ctx.strokeStyle = 'black'; //Cor do traço
       ctx.lineWidth = 2; //Espessura do traço
       ctx.moveTo(x,y); //Move o Ponteiros
-      ctx.lineTo(points[i].x,points[i].y);
-      x=points[i].x;
-      y=points[i].y;
+      ctx.lineTo(points[0][i].x,points[0][i].y);
+      x=points[0][i].x;
+      y=points[0][i].y;
       ctx.stroke();
     }
   }
+  }
 
 
-
-  x=curves[0].x;
-  y=curves[0].y;
-  for (var i in curves) {
+  if(document.getElementById('curvas').checked){
+  x=curves[0][0].x;
+  y=curves[0][0].y;
+  for (var i in curves[0]) {
     if(i!=0){
       ctx.beginPath();
       ctx.strokeStyle = 'black'; //Cor do traço
       ctx.lineWidth = 2; //Espessura do traço
       ctx.moveTo(x,y); //Move o Ponteiro
-      ctx.lineTo(curves[i].x,curves[i].y);
-      x=curves[i].x
-      y=curves[i].y;
+      ctx.lineTo(curves[0][i].x,curves[0][i].y);
+      x=curves[0][i].x
+      y=curves[0][i].y;
       ctx.stroke();
     }
   }
+}
 }
 
 function dist(p1, p2) {
@@ -99,21 +106,22 @@ function dist(p1, p2) {
 }
 
 function getIndex(click) {
-  for (var i in points) {
-    if (dist(points[i], click) <= 5) {
+  for (var i in points[0]) {
+    if (dist(points[0][i], click) <= 5) {
       return i;
     }
   }
   return -1;
 }
 
-var points = [];
-var curves = [];
+var points= [];
+var curves= [];
+curves.push([]);
+points.push([]);
 var aux =[];
 var parametrics=[];
 var move = false;
 var index = -1;
-var tam=1000;
 
 resizeCanvas();
 
@@ -121,7 +129,7 @@ canvas.addEventListener('mousedown', e => {
   var click = {x: e.offsetX, y: e.offsetY};
   index = getIndex(click);
   if (index === -1) {
-    points.push(click);
+    points[0].push(click);
     decas();
   } else {
     move = true;
@@ -130,7 +138,7 @@ canvas.addEventListener('mousedown', e => {
 
 canvas.addEventListener('mousemove', e => {
   if (move) {
-    points[index] = {x: e.offsetX, y: e.offsetY};
+    points[0][index] = {x: e.offsetX, y: e.offsetY};
     draw();
     decas();
     draw();
@@ -143,10 +151,15 @@ canvas.addEventListener('mouseup', e => {
 
 canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
-    points.splice(index, 1);
+    points[0].splice(index, 1);
     decas();
   }
 });
+
+avaliacoes.addEventListener('change', function () {
+    draw();
+});
+
 
 setInterval(() => {
     draw();

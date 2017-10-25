@@ -1,7 +1,29 @@
-html, body, canvas {
+html,  canvas {
   width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
   background: rgb(255, 255, 255);
+}
+body{
+	padding: 1%;
+	width: 98%;
+	height: 95%;
+	margin: 0;
+}
+#options{
+	width: 18%;
+	height: 90%;
+	border-left: 5px solid;
+	border-top: 5px solid;
+	border-bottom: 5px solid;
+	float: left;
+	align-items: center;
+	text-align: center;
+}
+#board{
+	width: 80%;
+	height: 90%;
+	border: 5px dotted;
+	float: left;
 }
