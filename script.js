@@ -186,6 +186,7 @@ canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points[nowCurve].splice(index, 1);
     decas();
+    draw();
   }
 });
 
@@ -194,10 +195,13 @@ avaliacoes.addEventListener('change', function () {
 });
 
 criarNova.addEventListener('click', function() {
+
     nowCurve=points.length;
     points.push([]);
+    decas();
 })
 
 setInterval(() => {
+    decas();
     draw();
 }, 1/30);
