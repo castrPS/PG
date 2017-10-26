@@ -7,21 +7,25 @@
   </head>
   <body>
   	<div id="options">
-  		<label>Pontos de Avaliação</label>
-  		<input type="number" id="avaliacoes" value="1000">
-
-  		<label>Pontos</label>
-  		<input type="checkbox" id="pontos" checked="true">
-  		<label>Poligonais</label>
-  		<input type="checkbox" id="poligonais" checked="true">
-  		<label>Curvas</label>
-  		<input type="checkbox" id="curvas" checked="true">
-
-  		<button id="novaCurva">Nova Curva</button>
+    <h1>Curvas de Bezier</h1>
+    <table>  		
+        <tr>
+          <td><label>Pontos de Avaliação</label>
+          <input type="number" id="avaliacoes" value="1000" (change)="draw()"></td>
+  		    <td><label>Pontos</label></td>
+  		    <td><input type="checkbox" id="pontos" checked="true"></td>
+  		    <td><label>Poligonais</label></td>
+  		    <td><input type="checkbox" id="poligonais" checked="true"></td>
+  		    <td><label>Curvas</label></td>
+  		    <td><input type="checkbox" id="curvas" checked="true"></td>
+          <td><button id="novaCurva">Nova Curva</button></td>
+        </tr>
+    </table>   
   	</div>
   	<div id="board">
   		<canvas id="canvas"></canvas>
   	</div>
+    <label id="assinatura">by Rafael Prado Santos (Dora)</label>
   </body>
   <script src="script.js"></script>
 </html>
