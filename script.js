@@ -15,14 +15,16 @@ function resizeToFit() {
 }
 
 function decas(){
-  curves[0]=[];
+  for(k in points){
+  curves[k]=[];
 
   for(var i=0; i<=avaliacoes.value;i++){
     aux=[];
-    for (var j in points[0]){
-      aux.push(points[0][j]);
+    for (var j in points[k]){
+      aux.push(points[k][j]);
     }
-    curves[0].push(tejau(i));
+    curves[k].push(tejau(i));
+  }
   }
 }
 
@@ -56,7 +58,10 @@ function draw() {
   for (var i in points[j]) {
     ctx.beginPath();
     ctx.arc(points[j][i].x, points[j][i].y, 6, 0, 2 * Math.PI);
-    ctx.fillStyle = 'black';
+    if(nowCurve==j)
+      ctx.fillStyle = 'blue';
+    else
+      ctx.fillStyle = 'black';
     ctx.fill();
     ctx.beginPath();
     ctx.arc(points[j][i].x, points[j][i].y, 4, 0, 2 * Math.PI);
@@ -68,39 +73,48 @@ function draw() {
 
   if(document.getElementById('poligonais').checked){
   for(var j in points){
-  var x=points[0][0].x;
-  var y=points[0][0].y;
-  for (var i in points[0]) {
+  var x=points[j][0].x;
+  var y=points[j][0].y;
+  for (var i in points[j]) {
     
     if(i!=0){
       ctx.beginPath();
-      ctx.strokeStyle = 'black'; //Cor do traço
+      if(nowCurve==j)
+        ctx.strokeStyle = 'blue';
+      else
+        ctx.strokeStyle = 'black';
       ctx.lineWidth = 2; //Espessura do traço
       ctx.moveTo(x,y); //Move o Ponteiros
-      ctx.lineTo(points[0][i].x,points[0][i].y);
-      x=points[0][i].x;
-      y=points[0][i].y;
+      ctx.lineTo(points[j][i].x,points[j][i].y);
+      x=points[j][i].x;
+      y=points[j][i].y;
       ctx.stroke();
     }
+  }
   }
   }
 
 
   if(document.getElementById('curvas').checked){
-  x=curves[0][0].x;
-  y=curves[0][0].y;
-  for (var i in curves[0]) {
+  for(var j in points){
+  x=curves[j][0].x;
+  y=curves[j][0].y;
+  for (var i in curves[j]) {
     if(i!=0){
       ctx.beginPath();
-      ctx.strokeStyle = 'black'; //Cor do traço
+      if(nowCurve==j)
+        ctx.strokeStyle = 'blue';
+      else
+        ctx.strokeStyle = 'black';
       ctx.lineWidth = 2; //Espessura do traço
       ctx.moveTo(x,y); //Move o Ponteiro
-      ctx.lineTo(curves[0][i].x,curves[0][i].y);
-      x=curves[0][i].x
-      y=curves[0][i].y;
+      ctx.lineTo(curves[j][i].x,curves[j][i].y);
+      x=curves[j][i].x
+      y=curves[j][i].y;
       ctx.stroke();
     }
   }
+}
 }
 }
 
@@ -114,11 +128,21 @@ function getIndex(click) {
   for (var i in points[j]) {
     if (dist(points[j][i], click) <= 5) {
       return i;
-      nowCurve=j;
     }
   }
 }
   return -1;
+}
+
+function getCurve(click) {
+  for (var j in points){
+  for (var i in points[j]) {
+    if (dist(points[j][i], click) <= 5) {
+      return j;
+    }
+  }
+}
+  return nowCurve;
 }
 
 var nowCurve=0;
@@ -136,6 +160,7 @@ resizeCanvas();
 canvas.addEventListener('mousedown', e => {
   var click = {x: e.offsetX, y: e.offsetY};
   index = getIndex(click);
+  nowCurve = getCurve(click);
   if (index === -1) {
     points[nowCurve].push(click);
     decas();
@@ -169,18 +194,8 @@ avaliacoes.addEventListener('change', function () {
 });
 
 criarNova.addEventListener('click', function() {
-  var nochange=-1;
-  for(var i in points){
-    if(points[i]===[]){
-      nochange=i;
-    }
-  }
-  if(nochange==-1){
-    points.push([]);
     nowCurve=points.length;
-  }else{
-    nowCurve=nochange;
-  }
+    points.push([]);
 })
 
 setInterval(() => {
