@@ -163,7 +163,7 @@ canvas.addEventListener('mousedown', e => {
   nowCurve = getCurve(click);
   if (index === -1) {
     points[nowCurve].push(click);
-    decas();
+    //decas();
   } else {
     move = true;
   }
@@ -172,9 +172,8 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[nowCurve][index] = {x: e.offsetX, y: e.offsetY};
-    draw();
-    decas();
-    draw();
+    //decas();
+    //draw();
   }
 });
 
@@ -190,8 +189,8 @@ canvas.addEventListener('dblclick', e => {
         points.splice(i,1);
       }
     }
-    decas();
-    draw();
+    //decas();
+    //draw();
   }
 });
 
@@ -203,7 +202,7 @@ criarNova.addEventListener('click', function() {
     if(points[0].length!=0){
     nowCurve=points.length;
     points.push([]);
-    decas();
+    //decas();
   }
 })
 
