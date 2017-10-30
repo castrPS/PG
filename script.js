@@ -14,6 +14,7 @@ function resizeToFit() {
     resizeCanvas(width, height);
 }
 
+
 function decas(){
   for(k in points){
   curves[k]=[];
@@ -22,6 +23,15 @@ function decas(){
     aux=points[k];
     curves[k].push(tejau(i));
   }
+  }
+}
+
+function unitdecas(k){
+  curves[k]=[];
+
+  for(var i=0; i<=avaliacoes.value;i++){
+    aux=points[k];
+    curves[k].push(tejau(i));
   }
 }
 
@@ -155,7 +165,7 @@ canvas.addEventListener('mousedown', e => {
   if (index === -1) {
     points[nowCurve].push(click);
     criarNova.disabled=false;
-    //decas();
+    unitdecas(nowCurve);
   } else {
     move = true;
   }
@@ -164,8 +174,7 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[nowCurve][index] = {x: e.offsetX, y: e.offsetY};
-    //decas();
-    //draw();
+    unitdecas(nowCurve);  
   }
 });
 
@@ -176,13 +185,16 @@ canvas.addEventListener('mouseup', e => {
 canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points[nowCurve].splice(index, 1);
+    unitdecas(nowCurve);
     if(points[nowCurve].length==0){
       points.splice(nowCurve,1);
+      curves.splice(nowCurve,1);
     }
   }
 });
 
 avaliacoes.addEventListener('change', function () {
+    decas();
     draw();
 });
 
@@ -191,10 +203,9 @@ criarNova.addEventListener('click', function() {
     curves.push([]);
     nowCurve=points.length-1;
     criarNova.disabled=true;
-    //decas();
 })
 
 setInterval(() => {
-    decas();
+    unitdecas(nowCurve);
     draw();
-}, 10);
+}, 1);
