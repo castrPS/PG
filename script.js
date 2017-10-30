@@ -165,7 +165,7 @@ canvas.addEventListener('mousedown', e => {
   if (index === -1) {
     points[nowCurve].push(click);
     criarNova.disabled=false;
-    unitdecas(nowCurve);
+    //unitdecas(nowCurve);
   } else {
     move = true;
   }
@@ -174,7 +174,7 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[nowCurve][index] = {x: e.offsetX, y: e.offsetY};
-    unitdecas(nowCurve);  
+    //unitdecas(nowCurve);  
   }
 });
 
@@ -185,10 +185,11 @@ canvas.addEventListener('mouseup', e => {
 canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points[nowCurve].splice(index, 1);
-    unitdecas(nowCurve);
+    //unitdecas(nowCurve);
     if(points[nowCurve].length==0){
       points.splice(nowCurve,1);
       curves.splice(nowCurve,1);
+      draw();
     }
   }
 });
