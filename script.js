@@ -19,41 +19,32 @@ function decas(){
   curves[k]=[];
 
   for(var i=0; i<=avaliacoes.value;i++){
-    aux=[];
-    for (var j in points[k]){
-      aux.push(points[k][j]);
-    }
+    aux=points[k];
     curves[k].push(tejau(i));
   }
   }
 }
 
 function tejau(para){
-  if (aux.length==1){
-    return aux[0];
-    alert(aux[0]);
-  }
-  else{
+  while(aux.length>1){
     var aux1=[];
       for(var j in aux){
         if(j!=0){
           aux1.push({x: (aux[j-1].x*(para/avaliacoes.value)) + (aux[j].x*(1-para/avaliacoes.value)), y: (aux[j-1].y*(para/avaliacoes.value)) + (aux[j].y*(1-para/avaliacoes.value))});
         }
       }
-    aux=[];
-    for (var j in aux1){
-      aux.push(aux1[j]);
-    }
-    return tejau(para);
-  }
+    aux=aux1;
+    
+}
+   return aux[0];
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-
-  if(document.getElementById('pontos').checked){
   for(var j in points){
+  if(document.getElementById('pontos').checked){
+  
   for (var i in points[j]) {
     ctx.beginPath();
     ctx.arc(points[j][i].x, points[j][i].y, 6, 0, 2 * Math.PI);
@@ -68,10 +59,8 @@ function draw() {
     ctx.fill();
   }
   }
-  }
 
   if(document.getElementById('poligonais').checked){
-  for(var j in points){
   var x=points[j][0].x;
   var y=points[j][0].y;
   for (var i in points[j]) {
@@ -91,11 +80,9 @@ function draw() {
     }
   }
   }
-  }
 
 
   if(document.getElementById('curvas').checked){
-  for(var j in points){
   x=curves[j][0].x;
   y=curves[j][0].y;
   for (var i in curves[j]) {
@@ -123,23 +110,27 @@ function dist(p1, p2) {
 }
 
 function getIndex(click) {
+  if(!criarNova.disabled){
   for (var j in points){
   for (var i in points[j]) {
     if (dist(points[j][i], click) <= 5) {
       return i;
     }
   }
-}
+  }
+  }
   return -1;
 }
 
 function getCurve(click) {
+  if(!criarNova.disabled){
   for (var j in points){
   for (var i in points[j]) {
     if (dist(points[j][i], click) <= 5) {
       return j;
     }
   }
+}
 }
   return nowCurve;
 }
@@ -153,6 +144,7 @@ var aux =[];
 var parametrics=[];
 var move = false;
 var index = -1;
+criarNova.disabled=true;
 
 resizeCanvas();
 
@@ -162,6 +154,7 @@ canvas.addEventListener('mousedown', e => {
   nowCurve = getCurve(click);
   if (index === -1) {
     points[nowCurve].push(click);
+    criarNova.disabled=false;
     //decas();
   } else {
     move = true;
@@ -183,13 +176,9 @@ canvas.addEventListener('mouseup', e => {
 canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points[nowCurve].splice(index, 1);
-    for(var i in points){
-      if (points[i].length==0){
-        points.splice(i,1);
-      }
+    if(points[nowCurve].length==0){
+      points.splice(nowCurve,1);
     }
-    //decas();
-    //draw();
   }
 });
 
@@ -201,10 +190,11 @@ criarNova.addEventListener('click', function() {
     points.push([]);
     curves.push([]);
     nowCurve=points.length-1;
+    criarNova.disabled=true;
     //decas();
 })
 
 setInterval(() => {
     decas();
     draw();
-}, 1/30);
+}, 10);
