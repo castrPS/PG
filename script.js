@@ -48,7 +48,6 @@ function tejau(para){
   }
 }
 
-
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
@@ -199,11 +198,10 @@ avaliacoes.addEventListener('change', function () {
 });
 
 criarNova.addEventListener('click', function() {
-    if(points[0].length!=0){
-    nowCurve=points.length;
     points.push([]);
+    curves.push([]);
+    nowCurve=points.length-1;
     //decas();
-  }
 })
 
 setInterval(() => {
