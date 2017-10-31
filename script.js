@@ -211,6 +211,8 @@ criarNova.addEventListener('click', function() {
     criarNova.disabled=true;
 })
 
+window.addEventListener("resize", resizeToFit());
+
 setInterval(() => {
     //unitdecas(nowCurve);
     draw();
