@@ -36,11 +36,14 @@ function unitdecas(k){
 }
 
 function tejau(para){
+  var consta=para/avaliacoes.value;
+  var point;
   while(aux.length>1){
     var aux1=[];
       for(var j in aux){
         if(j!=0){
-          aux1.push({x: (aux[j-1].x*(para/avaliacoes.value)) + (aux[j].x*(1-para/avaliacoes.value)), y: (aux[j-1].y*(para/avaliacoes.value)) + (aux[j].y*(1-para/avaliacoes.value))});
+	  point={x: (aux[j-1].x*(consta)) + (aux[j].x*(1-consta)), y: (aux[j-1].y*(consta)) + (aux[j].y*(1-consta))};
+          aux1.push(point);
         }
       }
     aux=aux1;
@@ -165,7 +168,8 @@ canvas.addEventListener('mousedown', e => {
   if (index === -1) {
     points[nowCurve].push(click);
     criarNova.disabled=false;
-    //unitdecas(nowCurve);
+    unitdecas(nowCurve);
+    draw();
   } else {
     move = true;
   }
@@ -174,7 +178,8 @@ canvas.addEventListener('mousedown', e => {
 canvas.addEventListener('mousemove', e => {
   if (move) {
     points[nowCurve][index] = {x: e.offsetX, y: e.offsetY};
-    //unitdecas(nowCurve);  
+    unitdecas(nowCurve); 
+    draw(); 
   }
 });
 
@@ -185,16 +190,16 @@ canvas.addEventListener('mouseup', e => {
 canvas.addEventListener('dblclick', e => {
   if (index !== -1) {
     points[nowCurve].splice(index, 1);
-    //unitdecas(nowCurve);
     if(points[nowCurve].length==0){
       points.splice(nowCurve,1);
       curves.splice(nowCurve,1);
-      draw();
     }
+   unitdecas(nowCurve);
+   draw();
   }
 });
 
-avaliacoes.addEventListener('change', function () {
+avaliacoes.addEventListener('input', function () {
     decas();
     draw();
 });
@@ -207,6 +212,7 @@ criarNova.addEventListener('click', function() {
 })
 
 setInterval(() => {
-    unitdecas(nowCurve);
+    //unitdecas(nowCurve);
     draw();
 }, 1);
+
