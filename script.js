@@ -14,6 +14,13 @@ function resizeToFit() {
     resizeCanvas(width, height);
 }
 
+function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+           x: (evt.clientX-rect.left)/(rect.right-rect.left)*canvas.width,
+           y: (evt.clientY-rect.top)/(rect.bottom-rect.top)*canvas.height
+        };
+}
 
 function decas(){
   for(k in points){
@@ -162,7 +169,7 @@ criarNova.disabled=true;
 resizeCanvas();
 
 canvas.addEventListener('mousedown', e => {
-  var click = {x: e.offsetX, y: e.offsetY};
+  var click = getMousePos(canvas, e);
   index = getIndex(click);
   nowCurve = getCurve(click);
   if (index === -1) {
@@ -177,7 +184,7 @@ canvas.addEventListener('mousedown', e => {
 
 canvas.addEventListener('mousemove', e => {
   if (move) {
-    points[nowCurve][index] = {x: e.offsetX, y: e.offsetY};
+    points[nowCurve][index] = getMousePos(canvas, e);
     unitdecas(nowCurve); 
     draw(); 
   }
@@ -217,4 +224,11 @@ setInterval(() => {
     //unitdecas(nowCurve);
     draw();
 }, 1);
+
+$(window).resize( respondCanvas );
+
+function respondCanvas(){
+        canvas.attr('width', $(container).width() ); 
+        canvas.attr('height', $(container).height() ); 
+}
 
